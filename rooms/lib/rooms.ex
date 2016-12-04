@@ -45,6 +45,9 @@ defmodule Rooms do
       iex> Rooms.calculated_checksum(["b","b","a","a","ccc","ccc","zzz","zzz","gggg"])
       "czgab"
 
+      iex> Rooms.calculated_checksum(["qzmt", "zixmtkozy", "ivhz"])
+      "zimth"
+
   """
   @spec calculated_checksum([String.t]) :: String.t
   def calculated_checksum(list) do
