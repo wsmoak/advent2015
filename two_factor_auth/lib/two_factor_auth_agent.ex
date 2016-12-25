@@ -103,4 +103,28 @@ defmodule TwoFactorAuthAgent do
   def get_total do
     (for row <- 0..5, do: TwoFactorAuthAgent.get_row(row)) |> List.flatten |> Enum.sum
   end
+
+  def get_cols(start,stop) do
+    for col <- start..stop, do: get_col(col)
+  end
+
+  def get_letter(start,stop) do
+    get_cols(start,stop)
+    |> Matrix.new(5,6)
+    |> Matrix.transpose
+  end
+
+  def get_letters do
+    get_letter(0,4) |> IO.inspect
+    get_letter(5,9) |> IO.inspect
+    get_letter(10,14) |> IO.inspect
+    get_letter(15,19) |> IO.inspect
+    get_letter(20,24) |> IO.inspect
+    get_letter(25,29) |> IO.inspect
+    get_letter(30,34) |> IO.inspect
+    get_letter(35,39) |> IO.inspect
+    get_letter(40,44) |> IO.inspect
+    get_letter(45,49) |> IO.inspect
+    nil
+  end
 end
