@@ -29,4 +29,19 @@ defmodule CompressionFormat.Agent do
       fn(_old_state) -> [] end
     )
   end
+
+
+  # A bit awkward here since we originally designed the Agent to use a List.  The first time it's called, it changes the state to just an integer.
+  def add(input) when is_integer(input) do
+    Agent.update(
+      __MODULE__,
+      fn(old_state) ->
+        if old_state == [] do
+          input
+        else
+          input + old_state
+        end
+      end
+    )
+  end
 end
