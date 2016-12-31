@@ -1,8 +1,5 @@
 alias Experimental.GenStage
 
-# TODO: this needs to be a producerconsumer and called "Decider"
-# then we need a final consumer that gathers up the first 64
-# TODO:  This part can be parallelized
 
 defmodule OneTimePad.Decider do
   use GenStage

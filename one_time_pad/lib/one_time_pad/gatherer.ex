@@ -1,9 +1,5 @@
 alias Experimental.GenStage
 
-# TODO: this needs to be a producerconsumer and called "Decider"
-# then we need a final consumer that gathers up the first 64
-# TODO:  This part can be parallelized
-
 defmodule OneTimePad.Gatherer do
   use GenStage
 
@@ -18,7 +14,7 @@ defmodule OneTimePad.Gatherer do
     IO.puts "In Gatherer, I have #{Enum.count(state)} keys now."
 
     if Enum.count(state) == 64 do
-      {:stop, "found 64 keys at index #{ hd(this_is_a_key) }", state}
+      {:stop, "found 64th key at index #{ hd(this_is_a_key) }", state}
     else
       {:noreply, [], state}
     end
