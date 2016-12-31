@@ -22,7 +22,7 @@ defmodule OneTimePad do
   end
 
   def solve(input) do
-    {:ok, hash_producer} = GenStage.start_link(OneTimePad.HashProducer, {0, input}, name: MyHashProducer )
+    {:ok, hash_producer} = GenStage.start_link(OneTimePad.Part2HashProducer, {0, input}, name: MyHashProducer )
     {:ok, worker} = GenStage.start_link(OneTimePad.Worker, :no_args, name: MyWorker)
     {:ok, decider} = GenStage.start_link(OneTimePad.Decider, :no_args, name: MyDecider)
     {:ok, gatherer} = GenStage.start_link(OneTimePad.Gatherer, :no_args, name: MyGatherer)

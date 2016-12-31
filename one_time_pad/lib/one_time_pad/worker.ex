@@ -19,7 +19,7 @@ defmodule OneTimePad.Worker do
     IO.puts "In Worker handle_subscribe, args is :producer, options is #{inspect options}, from is #{inspect from}, state is #{inspect state}"
 
     #check_and_ask(state, from) # start the loop that keeps the queue filled up
-    Process.send_after( self(), {:ask, from}, 5000 )
+    Process.send_after( self(), {:ask, from}, 500 )
 
     # for the worker, as a consumer, return :manual indicating that it will ask when it wants more events
     {:manual, state}
@@ -58,12 +58,12 @@ defmodule OneTimePad.Worker do
         # - A list of the next 1000 hashes to be checked.
         event = [ {index, triple, :queue.to_list(next_1000) } ]
       end
+      Process.send_after( self(), :do_work, 15 )
 
     else
       IO.puts "There aren't enough things in the queue right now."
+      Process.send_after( self(), :do_work, 5000 )
     end
-
-    Process.send_after( self(), :do_work, 15 )
 
     #if event != [], do: IO.puts "In worker, emitting an event... #{inspect event}"
 
@@ -77,7 +77,7 @@ defmodule OneTimePad.Worker do
       IO.puts "In Worker, asking for more items"
       GenStage.ask(from, 2500)
     end
-    Process.send_after( self(), {:ask, from}, 5000 )
+    Process.send_after( self(), {:ask, from}, 30000 )
 
     {:noreply, [], state}
   end
