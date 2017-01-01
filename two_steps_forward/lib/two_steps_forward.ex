@@ -11,17 +11,25 @@ defmodule TwoStepsForward do
   end
 
   def solve(input) do
-    bfs(%TSF{ position: {0,0}, path: "" }, input, :queue.new)
+    bfs(%TSF{ position: {0,0}, path: "" }, input, :queue.new, :queue.new)
   end
 
   # We have arrived at the bottom right corner
-  def bfs(%TSF{position: {3,3}, path: path}, _input, _todo_queue) do
-    IO.puts "DONE!"
-    IO.inspect path
+  def bfs(item = %TSF{position: {3,3}, path: path}, input, q, done) do
+    IO.puts "Found a path of length #{String.length(path)}"
+    done = :queue.in(item, done)
+
+#    IO.inspect done
+
+#    {{:value, item}, q} = :queue.out(q)
+#    IO.inspect item
+#    bfs(item, input, q, done)
+    next(input, q, done)
+
   end
 
   # breadth-first search
-  def bfs( item = %TSF{ position: {start_x, start_y}, path: path}, input, _todo = q) when start_x >= 0 and start_x <= 3 and start_y >= 0 and start_y <= 3 do
+  def bfs( item = %TSF{ position: {start_x, start_y}, path: path}, input, _todo = q, done) when start_x >= 0 and start_x <= 3 and start_y >= 0 and start_y <= 3 do
     [up, down, left, right] = hash( input <> path )
     if up, do: q = :queue.in( %TSF{path: path <> "U", position: {start_x,start_y-1} }, q)
     if down, do: q = :queue.in(%TSF{path: path <> "D", position: {start_x,start_y+1} }, q)
@@ -32,16 +40,36 @@ defmodule TwoStepsForward do
 
 #   IO.inspect q
 
-    {{:value, item}, q} = :queue.out(q)
-    IO.inspect item
-    bfs(item, input, q)
+#    {{:value, item}, q} = :queue.out(q)
+#    IO.inspect item
+#    bfs(item, input, q, done)
+    next(input, q, done)
+
   end
 
-  def bfs( item, input, q) do
+  def bfs( item, input, q, done) do
     IO.puts "Skipping item with position outside the grid"
-    {{:value, item}, q} = :queue.out(q)
-    IO.inspect item
-    bfs(item, input, q)
+#    {{:value, item}, q} = :queue.out(q)
+#    IO.inspect item
+#    bfs(item, input, q, done)
+    next(input, q, done)
+  end
+
+  def next(input, q, done) do
+    case :queue.out(q) do
+      {{:value, item}, q} ->
+        bfs(item, input, q, done)
+      {:empty, q} ->
+        find_longest(done)
+    end
+  end
+
+  def find_longest(q) do
+    q
+    |> :queue.to_list
+    |> Enum.map(fn item -> item.path end)
+    |> Enum.map(fn path -> String.length(path) end)
+    |> Enum.max
   end
 
   def hash(input) do
