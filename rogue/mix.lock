@@ -1,0 +1,2 @@
+%{"numbers": {:hex, :numbers, "1.0.0", "f1e224920ac347953faff00ecac1ee3f4b9e5103018eb3fc5d1999d53ae6418c", [:mix], []},
+  "tensor": {:hex, :tensor, "1.0.1", "c1dad6e7f8ba710e0c0791ccab7071063ec589b65e252bb76444c1a7d5f6d9cb", [:mix], [{:numbers, "~> 1.0", [hex: :numbers, optional: false]}]}}
